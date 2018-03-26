@@ -1,13 +1,9 @@
-const articleDao = require('./article/index.js')
-const cardDao = require('./card/index.js')
-const loginDao = require('./login/index.js')
-const qiniuDao = require('./qiniu/index.js')
-const userDao = require('./user/index.js')
+const dict = require('./dict')
+const login = require('./login')
+const user = require('./user')
 
 module.exports = {
-  articleDao,
-  cardDao,
-  loginDao,
-  qiniuDao,
-  userDao
+  dict,
+  login,
+  user
 }

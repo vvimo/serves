@@ -1,9 +1,9 @@
 // CRUD SQL语句
 var login = {
-  insert: 'INSERT INTO user(id, userName, password) VALUES (0,?,?)',
-  update: 'update user set password=? where id=?',
-  delete: 'delete from user where id=?',
-  queryByUsername: 'select id from user where userName=? and password=?'
+  // 查询用户
+  login: 'SELECT user_id, role_id FROM vm_user_message WHERE username = ? AND password = ?',
+  // 修改密码
+  changePassword: 'UPDATE vm_user_message SET password = ? WHERE user_id = ? AND password = ?'
 }
 
 module.exports = login

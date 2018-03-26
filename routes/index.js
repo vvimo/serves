@@ -1,35 +1,24 @@
-var express = require('express');
-var app = express.Router();
-var ApiDao = require('../api/dao');
+var express = require('express')
+var app = express.Router()
+var ApiDao = require('../api/dao')
 
 /* login */
-app.post('/login/add', function (req, res, next) { ApiDao.loginDao.add(req, res, next) })
-app.post('/login/update', function (req, res, next) { ApiDao.loginDao.update(req, res, next) })
-app.post('/login/delete', function (req, res, next) { ApiDao.loginDao.delete(req, res, next) })
-app.post('/login/login', function (req, res, next) { ApiDao.loginDao.queryByUserName(req, res, next) })
+app.post('/login', function (req, res, next) { ApiDao.login.login(req, res, next) })
+app.post('/password', function (req, res, next) { ApiDao.changePassword.login(req, res, next) })
 
 /* user */
-app.post('/user/add', function (req, res, next) { ApiDao.userDao.add(req, res, next) })
-app.post('/user/update', function (req, res, next) { ApiDao.userDao.update(req, res, next) })
-app.post('/user/delete', function (req, res, next) { ApiDao.userDao.delete(req, res, next) })
-app.post('/user/queryById', function (req, res, next) { ApiDao.userDao.queryById(req, res, next) })
-app.post('/user/queryAll', function (req, res, next) { ApiDao.userDao.queryAll(req, res, next) })
+app.post('/user/findUsers', function (req, res, next) { ApiDao.user.byRoleFindUserInfo(req, res, next) }) // 查询所有用户
+app.post('/user/findUserInfo', function (req, res, next) { ApiDao.user.findUserInfo(req, res, next) }) // 查询个人信息
+app.post('/user/addUser', function (req, res, next) { ApiDao.user.addUser(req, res, next) }) // 添加用户
+app.post('/user/updateUserInfo', function (req, res, next) { ApiDao.user.updateUserInfo(req, res, next) }) // 修改个人信息
 
-/* article */
-app.post('/article/add', function (req, res, next) { ApiDao.articleDao.add(req, res, next) })
-app.post('/article/update', function (req, res, next) { ApiDao.articleDao.update(req, res, next) })
-app.post('/article/updateRead', function (req, res, next) { ApiDao.articleDao.updateRead(req, res, next) })
-app.post('/article/updateState', function (req, res, next) { ApiDao.articleDao.updateState(req, res, next) })
-app.post('/article/delete', function (req, res, next) { ApiDao.articleDao.delete(req, res, next) })
-app.post('/article/queryById', function (req, res, next) { ApiDao.articleDao.queryById(req, res, next) })
-app.post('/article/queryAll', function (req, res, next) { ApiDao.articleDao.queryAll(req, res, next) })
+/* dict */
+app.post('/dict/findDict', function (req, res, next) { ApiDao.dict.findDict(req, res, next) }) // 查询字典
+app.post('/dict/addDict', function (req, res, next) { ApiDao.dict.addDict(req, res, next) }) // 添加字典
+app.post('/dict/updateDict', function (req, res, next) { ApiDao.dict.updateDict(req, res, next) }) // 修改字典
+app.post('/dict/findDictItem', function (req, res, next) { ApiDao.dict.findDictItem(req, res, next) }) // 查询字典明细
+app.post('/dict/addDictItem', function (req, res, next) { ApiDao.dict.addDictItem(req, res, next) }) // 添加字典明细
+app.post('/dict/updateDictItem', function (req, res, next) { ApiDao.dict.updateDictItem(req, res, next) }) // 修改字典明细
+app.post('/dict/allFindDictItem', function (req, res, next) { ApiDao.dict.allFindDictItem(req, res, next) }) // 查询全部字典明细
 
-/* card */
-app.post('/card/add', function (req, res, next) { ApiDao.cardDao.add(req, res, next) })
-app.post('/card/info', function (req, res, next) { ApiDao.cardDao.queryByCard(req, res, next) })
-
-/* qiniu */
-app.post('/qiniu/upload', function (req, res, next) { ApiDao.qiniuDao.upload(req, res, next) })
-app.post('/qiniu/getToken', function (req, res, next) { ApiDao.qiniuDao.getToken(req, res, next) })
-
-module.exports = app;
+module.exports = app

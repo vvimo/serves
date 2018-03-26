@@ -1,110 +1,42 @@
-var $pool = require('../pool')
+var $pool = require('../../pool')
 var $sql = require('./sqlMapping')
 var $jsonWrite = require('../jsonWrite')
  
 module.exports = {
-  add: function (req, res, next) {
-    // 获取前台页面传过来的参数
-    var param = req.query || req.params
-
-    // 建立连接，向表中插入值
-    // 'INSERT INTO user(userName, password) VALUES(?,?)'
-    $pool.getConnection(function (err, connection) {
-      connection.query($sql.insert, param,function (err, result) {
-        if (result) {
-          result = { code: 200, msg: '新增成功' }
-        }
-
-        // 以json形式，把操作结果返回给前台页面
-        $jsonWrite(res, result)
-
-        // 释放连接 
-        connection.release()
-      })
-    })
-  },
-  update: function (req, res, next) {
+  /* 帐号管理 */
+  byRoleFindUserInfo: function (req, res, next) {
+    // 通过角色获取所以用户信息
     var param = req.body
-
-    $pool.getConnection(function (err, connection) {
-      if (param.password == null || param.id == null) {
-        jsonWrite(res, undefined)
-        return
-      }
-
-      connection.query($sql.update, [param.password, +param.id], function (err, result) {
-        if (result) {
-          result = { code: 200, msg: '修改成功' }
-        }
-
-        $jsonWrite(res, result)
-        connection.release()
-      })
+    $pool.query($sql.byRoleFindUserInfo, [param.role_id], function (results, fields) {
+      $jsonWrite(res, results)
     })
   },
-  devare: function (req, res, next) {
-    var id = +req.query.id
-
-    $pool.getConnection(function (err, connection) {
-      connection.query($sql.devare, id, function (err, result) {
-
-        if (result) {
-          result = { code: 200, msg: '删除成功' }
-        }
-
-        $jsonWrite(res, result)
-        connection.release()
-      })
+  addUser: function (req, res, next) {
+    // 添加帐号
+    var param = req.body
+    $pool.query($sql.addUser, [param.role_id, param.username, param.password], function (results, fields) {
+      $jsonWrite(res, results)
     })
   },
-  queryById: function (req, res, next) {
-    var id = req.query.id
-
-    // 为了拼凑正确的sql语句，这里要转下整数
-    $pool.getConnection(function(err, connection) {
-      connection.query($sql.queryById, id, function(err, result) {
-        if (result) {
-          result = {
-            code: 200,
-            msg: '查询成功',
-            data: result
-          }
-        }
-        $jsonWrite(res, result)
-        connection.release()
-      })
+  addUserInfo: function (req, res, next) {
+    // 添加帐号
+    var param = req.body
+    $pool.query($sql.addUserInfo, [param.user_id, param.role_id, param.username, param.password], function (results, fields) {
+      $jsonWrite(res, results)
     })
   },
-  queryAll: function (req, res, next) {
-    $pool.getConnection(function (err, connection) {
-      connection.query($sql.queryAll, function (err, result) {
-        if (result) {
-          result = {
-            code: 200,
-            msg: '查询成功',
-            data: result
-          }
-        }
-
-        $jsonWrite(res, result)
-        connection.release()
-      })
+  findUserInfo: function (req, res, next) {
+    // 查询个人信息
+    var param = req.body
+    $pool.query($sql.findUserInfo, [param.userId], function (results, fields) {
+      $jsonWrite(res, results[0])
     })
   },
-  cardAdd: function (req, res, next) {
-    var param = req.query || req.params
-
-    $pool.getConnection(function (err, connection) {
-      connection.query($sql.cardAdd, [param.number, param.name],function (err, result) {
-        if (result) {
-          result = {
-            code: 200,
-            msg: '添加成功'
-          }
-        }
-        $jsonWrite(res, result)
-        connection.release()
-      })
+  updateUserInfo: function (req, res, next) {
+    // 修改帐号信息
+    var param = req.body
+    $pool.query($sql.updateUserInfo, [param.admin_name, param.admin_sex, param.admin_age, param.admin_email, param.office_phone, param.cell_phone, param.address, param.admin_id], function (results, fields) {
+      $jsonWrite(res, results)
     })
   }
 }
